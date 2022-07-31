@@ -1,0 +1,30 @@
+{
+  "id": "3557757",
+  "name": "dkd",
+  "font_family": "dikede",
+  "css_prefix_text": "dkd-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5321529",
+      "name": "实名认证",
+      "font_class": "shimingrenzheng",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "8361853",
+      "name": "眼睛1",
+      "font_class": "yanjing",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "8361926",
+      "name": "眼睛1",
+      "font_class": "yanjing1",
+      "unicode": "e6e1",
+      "unicode_decimal": 59105
+    }
+  ]
+}
