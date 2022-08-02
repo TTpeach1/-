@@ -9,19 +9,27 @@
       <!-- 主体内容区域 -->
       <div class="login-form">
         <div style="margin: 20px" />
-        <el-form :label-position="labelPosition">
-          <el-form-item>
+        <el-form
+          :label-position="labelPosition"
+          :model="ruleForm"
+          :rules="rules"
+          ref="loginForm"
+        >
+          <el-form-item prop="loginName">
             <el-input
+              v-model="ruleForm.loginName"
               prefix-icon="el-icon-mobile-phone"
               placeholder="请输入账号/手机号"
             />
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
+              v-model="ruleForm.password"
               ref="password"
               prefix-icon="el-icon-lock"
               placeholder="请输入密码"
             >
+              <!-- 眼睛图标 -->
               <div slot="suffix">
                 <i
                   v-if="isShow"
@@ -36,14 +44,22 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input class="last-rz-input" placeholder="请输入验证码">
+            <el-input
+              v-model="ruleForm.code"
+              class="last-rz-input"
+              placeholder="请输入验证码"
+            >
               <p slot="prefix" class="login-rz-icon">
                 <i class="dikede dkd-shimingrenzheng" />
               </p>
             </el-input>
-            <div class="login-code" @click="refreshCode"></div>
+            <div class="login-code" @click="refreshCode">
+              <img ref="imgCode" src="" alt="" />
+            </div>
           </el-form-item>
-          <el-button type="primary" class="login-btn">login</el-button>
+          <el-button type="primary" class="login-btn" @click="onSubmit"
+            >login</el-button
+          >
         </el-form>
       </div>
     </div>
@@ -51,21 +67,58 @@
 </template>
 
 <script>
+import { imageCodeApi } from '@/api'
 export default {
   components: {},
   data() {
     return {
       labelPosition: 'right',
-      isShow: false
+      isShow: false,
+      ruleForm: {
+        loginName: 'admin',
+        password: 'admin',
+        code: '',
+        clientToken: '',
+        loginType: 0
+      },
+      rules: {
+        loginName: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          {
+            pattern: /^[a-z]{5}/,
+            message: '用户名格式不正确,请输入5位字母',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          {
+            pattern: /^[a-z]{5}/,
+            message: '密码格式不正确,请输入5位字母',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
+  },
+  created() {
+    this.imageCode()
   },
   mounted() {
     // 初始化验证
   },
   methods: {
-    onSubmit() {
-      console.log('submit!')
+    async onSubmit() {
+      await this.$refs.loginForm.validate((result,error)=>{
+        if(!result){
+          return console.log(error);
+        }
+      })
+      this.$store.dispatch('user/getToken',this.ruleForm)
+
+      // console.log(res)
     },
+    //隐藏和显示眼睛图标
     isShowPass() {
       this.isShow = !this.isShow
       if (this.isShow) {
@@ -74,7 +127,24 @@ export default {
         this.$refs.password.type = 'text'
       }
     },
-    refreshCode() {}
+    //点击验证码图片切换
+    refreshCode() {
+      this.imageCode()
+    },
+    //获取验证码图片
+    async imageCode() {
+      try {
+        // 随机四位整数
+        const num = Math.floor(Math.random() * 10000)
+        // console.log(num)
+        this.ruleForm.clientToken = num
+        const res = await imageCodeApi(num)
+        this.$refs.imgCode.src = res.request.responseURL
+        console.log(res, '获取验证码')
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 }
 </script>
@@ -122,7 +192,7 @@ export default {
       .login-code {
         position: absolute;
         right: 0;
-        top: 0;
+        top: 1px;
       }
       // 表单框
       /deep/.el-input__inner {
