@@ -12,19 +12,21 @@ $panGreen: #30B08F;
 $green1: #44b549;
 
 // sidebar
-$menuText:#ffffff;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+$menuText:#409EFF; //文字默认颜色
+$menuActiveText:black; //点击后文字颜色
+$subMenuActiveText:black; // https://github.com/ElemeFE/element/issues/12951
 
-$menuBg: transparent;
-$menuHover:#ffffff;
+// $menuBg: transparent;
+// $menuHover:#fff;
+$menuBg: #fff; //默认背景
+$menuHover:#eee; //鼠标经过背景
 
 
 
 $subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
+$subMenuHover:#eee;
 
-$sideBarWidth: 210px;
+$sideBarWidth: 150px;
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

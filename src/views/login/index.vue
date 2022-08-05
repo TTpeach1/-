@@ -43,7 +43,7 @@
                 /></div
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="code">
             <el-input
               v-model="ruleForm.code"
               class="last-rz-input"
@@ -57,7 +57,7 @@
               <img ref="imgCode" src="" alt="" />
             </div>
           </el-form-item>
-          <el-button type="primary" class="login-btn" @click="onSubmit"
+          <el-button type="primary" class="login-btn" @click="login"
             >login</el-button
           >
         </el-form>
@@ -68,6 +68,7 @@
 
 <script>
 import { imageCodeApi } from '@/api'
+import { Message } from 'element-ui'
 export default {
   components: {},
   data() {
@@ -97,7 +98,8 @@ export default {
             message: '密码格式不正确,请输入5位字母',
             trigger: 'blur'
           }
-        ]
+        ],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
   },
@@ -108,14 +110,16 @@ export default {
     // 初始化验证
   },
   methods: {
-    async onSubmit() {
-      await this.$refs.loginForm.validate((result,error)=>{
-        if(!result){
-          return console.log(error);
+    async login() {
+      await this.$refs.loginForm.validate(async (result, error) => {
+        if (!result) {
+          // console.log(111);
+          Message(error.code[0].message)
+          return console.log(error)
         }
+        await this.$store.dispatch('user/getToken', this.ruleForm)
+        this.$router.push('/')
       })
-      this.$store.dispatch('user/getToken',this.ruleForm)
-
       // console.log(res)
     },
     //隐藏和显示眼睛图标

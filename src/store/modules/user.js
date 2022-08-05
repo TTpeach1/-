@@ -100,32 +100,58 @@
 //   mutations,
 //   actions
 // }
-// 
+//
 // import { setToken, getToken, removeToken } from '@/utils/auth'
 import Cookies from 'js-cookie'
-import {onLoginApi} from '@/api'
+import { onLoginApi, getUserInfoApi } from '@/api'
 export default {
   namespaced: true,
   state: {
-    userName:'',
-    userId:'',
-    token:''
+    userName: Cookies.get('user_name'),
+    userId: Cookies.get('user_id'),
+    token: Cookies.get('token'),
+    userInfo: {}
   },
   mutations: {
-    setToken(state,payload){
+    setToken(state, payload) {
       state.userName = payload.data.userName
-      Cookies.set('user_name',payload.data.userName)
+      Cookies.set('user_name', payload.data.userName)
       state.userId = payload.data.userId
-      Cookies.set('user_id',payload.data.userId)
+      Cookies.set('user_id', payload.data.userId)
       state.token = payload.data.token
-      Cookies.set('token',payload.data.token)
+      // console.log(state.token);
+      Cookies.set('token', payload.data.token)
+    },
+    setUserInfo(state, payload) {
+      state.userInfo = payload.data
+    },
+    delToken(state, payload) {
+      state.token = payload
+      Cookies.set('token', payload)
+    },
+    delUserInfo(state, payload) {
+      state.userInfo = payload
     }
   },
   actions: {
-    async getToken(context,data){
+    //获取token
+    async getToken(context, data) {
       const res = await onLoginApi(data)
-      console.log(res);
-      context.commit('setToken',res)
+      console.log(res, '登陆数据')
+      context.commit('setToken', res)
+      //token存在发送时间戳到cookies
+      Cookies.set('tokenTime', Date.now())
+    },
+    //获取用户信息
+    async getUserInfo(context) {
+      const res = await getUserInfoApi(Cookies.get('user_id'))
+      console.log(res, '用户数据')
+      context.commit('setUserInfo', res)
+    },
+    //退出页面，清除token
+    logout(context){
+      context.commit('delToken','')
+      context.commit('delUserInfo',{})
     }
   }
 }

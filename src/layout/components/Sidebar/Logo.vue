@@ -1,32 +1,19 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
-    <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
-      </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
-      </router-link>
-    </transition>
+  <div>
+    <div class="sidebar-logo-container">
+      <img
+        src="http://likede2-admin.itheima.net/img/logo.3673fab5.png"
+        class="sidebar-logo"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'SidebarLogo',
-  props: {
-    collapse: {
-      type: Boolean,
-      required: true
-    }
-  },
   data() {
-    return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
-    }
+    return {}
   }
 }
 </script>
@@ -44,22 +31,28 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
-  text-align: center;
+  height: 60px;
+  line-height: 60px;
+  background: #5373e0;
+  // text-align: center;
   overflow: hidden;
+  .sidebar-logo {
+    margin-top: 12.5px;
+    margin-left: 15px;
+    height: 35px;
+    z-index: 99;
+  }
 
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
 
-    & .sidebar-logo {
-      width: 32px;
-      height: 32px;
-      vertical-align: middle;
-      margin-right: 12px;
-    }
+    // & .sidebar-logo {
+    //   width: 32px;
+    //   height: 32px;
+    //   vertical-align: middle;
+    //   margin-right: 12px;
+    // }
 
     & .sidebar-title {
       display: inline-block;

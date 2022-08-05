@@ -12,6 +12,8 @@
     width: $sideBarWidth !important;
     background-color: $menuBg;
     height: 100%;
+    // width: 90px;
+    // background: -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
     position: fixed;
     font-size: 0px;
     top: 0;
@@ -83,7 +85,7 @@
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
+      // background-color: $subMenuBg !important;
 
       &:hover {
         background-color: $subMenuHover !important;
